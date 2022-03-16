@@ -1,7 +1,15 @@
 [package]
 name = "curtain"
 version = "1.0.0"
+authors = ["Zhuoran Tan <t@zhuorantan.com>"]
 edition = "2021"
+description = "Screen locking for macOS Screen Sharing"
+homepage = "https://github.com/zhuorantan/curtain"
+repository = "https://github.com/zhuorantan/curtain"
+license = "MIT"
+keywords = ["macos", "screen", "lock", "screen-sharing", "vnc"]
+categories = ["command-line-utilities"]
+readme = "README.md"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
