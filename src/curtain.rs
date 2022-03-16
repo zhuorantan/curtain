@@ -36,7 +36,7 @@ fn get_session_id() -> c_int {
     number
 }
 
-pub fn lock_screen(msg: &Option<&str>) {
+pub fn lock_screen(msg: &Option<String>) {
     let session_id = get_session_id();
     let session_id_str = &session_id.to_string();
 
