@@ -2,6 +2,12 @@
 
 Physical screen locking for macOS Screen Sharing based on [franrogers/curtains](https://github.com/franrogers/curtains).
 
+## Installation
+
+```sh
+brew install zhuorantan/curtain/curtain
+```
+
 ## Usage
 
 Lock physical screens and input devices:
