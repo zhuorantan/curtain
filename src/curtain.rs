@@ -36,16 +36,19 @@ fn get_session_id() -> c_int {
     number
 }
 
-pub fn lock_screen(msg: &str) {
+pub fn lock_screen(msg: &Option<&str>) {
     let session_id = get_session_id();
+    let session_id_str = &session_id.to_string();
 
-    let lock_cmd_args = [
+    let mut lock_cmd_args: Vec<&str> = [
         "/System/Library/CoreServices/RemoteManagement/AppleVNCServer.bundle/Contents/Support/LockScreen.app/Contents/MacOS/LockScreen",
         "-session",
-        &session_id.to_string(),
-        "-msg",
-        msg,
-    ];
+        session_id_str,
+    ].to_vec();
+
+    if let Some(msg) = msg {
+        lock_cmd_args.append(&mut vec!["-msg", msg]);
+    }
 
     let lock_cmd_args: Vec<CFString> = lock_cmd_args.iter().map(|x| CFString::new(x)).collect();
     let lock_cmd_args: Vec<CFStringRef> = lock_cmd_args.iter().map(|x| unsafe { mem::transmute(x.to_void()) }).collect();

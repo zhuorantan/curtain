@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 core-foundation = "0.9.3"
 core-graphics = "0.22.3"
+clap = { version = "3.1.6", features = ["derive"] }
