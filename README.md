@@ -28,3 +28,7 @@ To unlock:
 ```sh
 curtain unlock
 ```
+
+## License
+
+[MIT license](LICENSE)
