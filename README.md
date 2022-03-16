@@ -2,6 +2,10 @@
 
 Physical screen locking for macOS Screen Sharing based on [franrogers/curtains](https://github.com/franrogers/curtains).
 
+![](lock-screen-curtain.png)
+
+Lock screen while controlling the Mac remotely.
+
 ## Installation
 
 ```sh
