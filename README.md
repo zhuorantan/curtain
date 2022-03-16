@@ -13,7 +13,7 @@ brew install zhuorantan/curtain/curtain
 Lock physical screens and input devices:
 
 ```sh
-curtain lock -m "Optional message display on screen"
+curtain lock -m "Optional message displayed on screen"
 ```
 
 A confirmation prompt would show to make sure you don't lock yourself out of your Mac. To skip the
