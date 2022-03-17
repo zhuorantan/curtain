@@ -3,6 +3,7 @@ use clap::{Args, Parser, Subcommand};
 
 mod curtain;
 mod auto;
+mod notify;
 
 #[derive(Parser, Debug)]
 #[clap(version, about)]
@@ -51,6 +52,10 @@ struct AutoArgs {
     /// Message to display on the lock screen
     #[clap(short, long)]
     message: Option<String>,
+
+    /// Notification duration in seconds. Specify 0 to disable notification
+    #[clap(long, default_value = "5")]
+    notify_duration: u64,
 }
 
 fn lock(message: Option<&str>, yes: bool) {
@@ -76,8 +81,8 @@ fn main() {
         Command::Lock { message, yes } => lock(message.as_deref(), *yes),
         Command::Unlock => curtain::unlock_screen(),
         Command::Auto { command } => match command {
-            AutoCommand::Run(args) => auto::run(args.message.as_deref()),
-            AutoCommand::Enable(args) => auto::enable(args.message.as_deref()),
+            AutoCommand::Run(args) => auto::run(args.message.as_deref(), args.notify_duration),
+            AutoCommand::Enable(args) => auto::enable(args.message.as_deref(), args.notify_duration),
             AutoCommand::Disable => auto::disable(),
         },
     }

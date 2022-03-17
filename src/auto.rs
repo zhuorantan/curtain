@@ -8,8 +8,9 @@ use std::io::prelude::*;
 use sysinfo::{self, SystemExt};
 use dirs;
 use crate::curtain;
+use crate::notify;
 
-pub fn run(message: Option<&str>) {
+pub fn run(message: Option<&str>, notify_duration: u64) {
     println!("Started detecting Screen Sharing session");
 
     let mut is_connected = false;
@@ -17,20 +18,17 @@ pub fn run(message: Option<&str>) {
     loop {
         let system = sysinfo::System::new_with_specifics(sysinfo::RefreshKind::new().with_processes(sysinfo::ProcessRefreshKind::new()));
         let is_screen_sharing = system.processes_by_name("screensharingd").next().is_some();
-        if !is_screen_sharing {
-            println!("Screen Sharing session is not detected. Exiting...");
-            break;
-        }
-
         let is_connected_new = is_screen_sharing && !curtain::is_session_locked();
 
         if !is_connected && is_connected_new {
             curtain::lock_screen(message);
             println!("Screen Sharing session detected. Screen is locked.");
+
+            notify::notify(notify_duration);
         }
         is_connected = is_connected_new;
 
-        thread::sleep(time::Duration::from_secs(3));
+        thread::sleep(time::Duration::from_secs(5));
     }
 }
 
@@ -57,7 +55,7 @@ fn get_launch_agent_file_path() -> path::PathBuf {
         .join("com.zhuorantan.curtain.plist")
 }
 
-pub fn enable(message: Option<&str>) {
+pub fn enable(message: Option<&str>, notify_duration: u64) {
     let exe = get_current_exe();
     let message = message.clone().unwrap_or("");
 
@@ -75,14 +73,13 @@ pub fn enable(message: Option<&str>) {
         <string>run</string>
         <string>--message</string>
         <string>{message}</string>
+        <string>--notify-duration</string>
+        <string>{notify_duration}</string>
     </array>
     <key>KeepAlive</key>
     <dict>
-        <key>OtherJobEnabled</key>
-        <dict>
-            <key>com.apple.screensharing.agent</key>
-            <true/>
-        </dict>
+        <key>SuccessfulExit</key>
+        <false/>
     </dict>
 </dict>
 </plist>
