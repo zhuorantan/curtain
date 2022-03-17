@@ -17,6 +17,11 @@ pub fn run(message: Option<&str>) {
     loop {
         let system = sysinfo::System::new_with_specifics(sysinfo::RefreshKind::new().with_processes(sysinfo::ProcessRefreshKind::new()));
         let is_screen_sharing = system.processes_by_name("screensharingd").next().is_some();
+        if !is_screen_sharing {
+            println!("Screen Sharing session is not detected. Exiting...");
+            break;
+        }
+
         let is_connected_new = is_screen_sharing && !curtain::is_session_locked();
 
         if !is_connected && is_connected_new {
