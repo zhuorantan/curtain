@@ -14,6 +14,24 @@ brew install zhuorantan/curtain/curtain
 
 ## Usage
 
+### Automatic
+
+To enable automatic locking:
+
+```sh
+curtain auto enable -m "Optional message displayed on screen"
+```
+
+This will create a launch agent to lock screens when a Screen Sharing session is established.
+
+To disable automatic locking:
+
+```sh
+curtain auto disable
+```
+
+### Manual
+
 Lock physical screens and input devices:
 
 ```sh
