@@ -36,7 +36,26 @@ fn get_session_id() -> c_int {
     number
 }
 
-pub fn lock_screen(msg: &Option<String>) {
+pub fn is_session_locked() -> bool {
+    let dict_ref = unsafe { CGSCopyCurrentSessionDictionary() };
+
+    let key = CFString::new("CGSSessionScreenIsLocked");
+    let mut number_ref: CFTypeRef = ptr::null();
+
+    unsafe { CFDictionaryGetValueIfPresent(dict_ref, key.to_void(), &mut number_ref) };
+    unsafe { CFRelease(dict_ref.to_void()) };
+
+    if number_ref == ptr::null() {
+        return false;
+    }
+
+    let mut number: c_int = 0;
+    unsafe { CFNumberGetValue(number_ref as CFNumberRef, kCFNumberIntType, mem::transmute(&mut number)) };
+
+    number != 0
+}
+
+pub fn lock_screen(msg: Option<&str>) {
     let session_id = get_session_id();
     let session_id_str = &session_id.to_string();
 
